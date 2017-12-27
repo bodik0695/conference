@@ -3,7 +3,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: './app/index.jsx',
+    entry: './app/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: './bundle.js',
@@ -31,6 +31,12 @@ module.exports = {
     },
     devServer: {
         port: 4000,
+        proxy: {
+            '/todos': {
+                target: 'http://localhost:3000',
+                secure: false,
+            },
+        },
     },
     plugins: [
         new ExtractTextPlugin('style.css'),

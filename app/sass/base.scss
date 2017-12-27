@@ -1,6 +1,92 @@
-$bkg-color: rgb(0,0,0);
+$bkg-color: rgb(43, 224, 170);
 
-
+*{
+    margin: 0;
+}
 body{
+    display: flex;
+    justify-content: center;
+}
+.todo{
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.myBtn{
+    border-radius: 5px;
     background: $bkg-color;
+    border-color: $bkg-color;
+}
+.newTaskForm{
+    margin-top: 20px;
+    &_title, &_text{
+        width: 100%;
+        border-radius: 5px;
+    }
+    &_btn{   
+        padding: 7px 10px;
+        color: white;
+    }
+}
+.tasksList{
+    padding: 0;
+    margin-top: 10px;
+}
+.task{
+    list-style-type: none;
+    &_form{
+        width: 100%;
+        border: 1px solid rgb(200, 197, 197);
+        border-radius: 5px;
+    }
+    &_baseElements{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 30px;
+        margin-top: 5px;
+    }
+    &_checkbox{
+        margin-left: 15px;
+    }
+    &_title{
+        width: 65%;
+        padding-left: 10px;
+        border-bottom: 1px solid black;
+    }
+    &_titleTxt{
+        margin: 0;
+    }
+    &_editBtn{
+        width: 36px;
+        height: 36px;
+    }
+    &_editBtnIcon{
+        margin-top: -5px;
+        width: 20px;
+        height: 20px;
+    }
+    &_delBtn{
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+    }
+    &_delBtnIcon{
+        width: 20px;
+        height: 20px;
+        line-height: normal;
+        color: white;
+        margin-top: -20px;
+    }
+    &_text{
+        width: 90%;
+        margin-top: 5px;
+    }
+    &_textTxt{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }

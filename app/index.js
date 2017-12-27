@@ -1,3 +1,9 @@
-import test from './js/test.jsx';
+import 'babel-polyfill';
+import './sass/base.scss';
+import './js/todo.jsx';
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import './js/task.jsx';
 
-test();
+import './js/todo.jsx';
+
