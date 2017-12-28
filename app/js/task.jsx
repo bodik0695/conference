@@ -1,29 +1,27 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-class Hello extends React.Component {
-    constructor(props) {
-        super(props);
-         this.state = {};
-    }
-
-    componentDidMount() {
-        this.setState({ name: 'Vasy1'});
-        this.setState((prevState, props) => ({
-            name: prevState.name === 'Vasy' ? `${prevState.name} Pety` : prevState.name
-         }));
-        console.dir(this);
-        console.log(2, this.state);
-        console.log(3, this.state.name); // ?
-    }
-
-    render() {
-        console.log(0, this.state.name); // ?
-        return <h1>Hello {this.state.name}</h1>;
-    }
- };
-
- ReactDOM.render(
-    <Hello name='World' />,
-    document.getElementById('container')
-  );
+// export default class Task extends React.Component{
+//     render() {
+//         let tasks = this.props.tasks.map(() => {
+//             <form action="" name="task_form" className="task_form">
+//                 <div className="task_baseElements">
+//                     <div className="task_checkbox">
+//                         <input type="checkbox" />
+//                     </div>
+//                     <div className="task_title">
+//                         <p className="task_titleTxt">title</p>
+//                     </div>
+//                     <button id="task_editBtn" className="myBtn task_editBtn"  title="Edit Task">
+//                         <img src="app/images/editWhite.svg" alt="" className="task_editBtnIcon" />
+//                     </button>
+//                     <button id="task_delBtn" className="myBtn task_delBtn" title="Delete Task"><div className="task_delBtnIcon">&times;</div></button>
+//                 </div>
+//                 <div className="col-12 col-md-12 task_text" title="text">
+//                     <p className="task_textTxt">text</p>
+//                 </div>
+//             </form>
+//         });
+//         console.log(tasksStorage.data.tasks);
+//         return tasks;
+//     }
+// }

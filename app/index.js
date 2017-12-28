@@ -5,5 +5,3 @@ import './js/todo.jsx';
 // import ReactDOM from 'react-dom';
 // import './js/task.jsx';
 
-import './js/todo.jsx';
-
