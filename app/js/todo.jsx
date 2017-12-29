@@ -4,7 +4,7 @@ import sendRequest from './request';
 import TaskActions from './taskActions';
 import Title from './title.jsx';
 import Text from './text.jsx';
-import Task from './task.jsx';
+// import Task from './task.jsx';
 import NewTaskForm from './newTaskForm.jsx';
 
 class ToDo extends React.Component{
@@ -20,10 +20,10 @@ class ToDo extends React.Component{
         return (
             <div className='todo'>
             <h1 className='todo_title'>My todo</h1>
-                {/*<NewTaskForm />*/}
+                <NewTaskForm />
                 <div className='tasks'>
                     <ul id='tasksList' className='tasksList'>
-                    <Task />;
+                    {/*<Task />;*/}
                     </ul>
                 </div>
             </div>

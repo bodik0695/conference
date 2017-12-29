@@ -3,7 +3,7 @@ import sendRequest from './request';
 export default class TaskActions {
     static async addtask(e){
         e.preventDefault();
-
+        console.log(e);
         const getReq = {
             method: 'GET',
             url: '/todos',

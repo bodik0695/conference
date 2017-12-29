@@ -1,10 +1,11 @@
 import React from 'react';
 
-export default class Title extends React.Component{
+export default class Title extends React.Component{ 
   render() {
+    console.log(this.props.title);
       return (
         <input id="newTitle" type="text" className ="newTaskForm_title" placeholder="Task Title" 
-        value={this.state.title} onChange={this.onChangeTitle.bind(this)}/>
+        value={this.props.title}  onChange={this.props.onChangeTitle}/>
       )
   }
 }
