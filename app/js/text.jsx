@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Text extends React.Component{
+export default class Text extends React.PureComponent{
   render() {
     console.log(this.props.text);
       return (
