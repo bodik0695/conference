@@ -1,27 +1,65 @@
 import React from 'react';
+import {FlatButton} from 'material-ui';
+import {IconButton} from 'material-ui';
+import {Checkbox} from 'material-ui';
+import {SvgIcon} from 'material-ui';
+import EditIcon from './editIcon.jsx';
+import DelIcon from './delIcon.jsx';
+import {Paper} from 'material-ui';
 
 export default class Task extends React.Component{
-    // render() {
-    //     let tasks = this.props.tasks.map(() => {
-    //         <form action="" name="task_form" className="task_form">
-    //             <div className="task_baseElements">
-    //                 <div className="task_checkbox">
-    //                     <input type="checkbox" />
-    //                 </div>
-    //                 <div className="task_title">
-    //                     <p className="task_titleTxt">title</p>
-    //                 </div>
-    //                 <button id="task_editBtn" className="myBtn task_editBtn"  title="Edit Task">
-    //                     <img src="app/images/editWhite.svg" alt="" className="task_editBtnIcon" />
-    //                 </button>
-    //                 <button id="task_delBtn" className="myBtn task_delBtn" title="Delete Task"><div className="task_delBtnIcon">&times;</div></button>
-    //             </div>
-    //             <div className="col-12 col-md-12 task_text" title="text">
-    //                 <p className="task_textTxt">text</p>
-    //             </div>
-    //         </form>
-    //     });
-    //     console.log(tasksStorage.data.tasks);
-    //     return tasks;
-    // }
+    state = {
+        checked: false
+    }
+
+    updateCheck = () => {
+        this.setState((oldState) => {
+          return {
+            checked: !oldState.checked,
+          };
+        });
+        this.props.changeStatus(this.props.identificator, this.state.checked);
+    }
+    componentWillMount() {
+        this.setState(() => {
+            return {
+                checked: this.props.task.status == 1 ? true : false
+            }
+        });
+    }
+    render() {
+        return (
+            <Paper className='task_form' zDepth={2} rounded={false}>
+                <form action='' name='task_form' className='task_form'>
+                    <div className='task_baseElements'>
+                        <Checkbox
+                            label={this.props.task.title}
+                            checked={this.state.checked}
+                            onCheck={this.updateCheck}
+                            className='task_checkbox'
+                        />
+                        <IconButton
+                            className='myBtn task_btn'
+                            title='Edit Task'
+                        >
+                            <EditIcon 
+                                color='#FFF'
+                                className='task_btnIcon'
+                            />
+                        </IconButton>
+                        <IconButton
+                            className='myBtn task_btn'
+                            title='Delete Task'
+                        >
+                            <DelIcon 
+                                color='#FFF'
+                                className='task_btnIcon'
+                            />
+                        </IconButton>
+                    </div>
+                    <p className='task_text' title={this.props.task.text}>{this.props.task.text}</p>
+                </form>
+            </Paper>
+        );
+    }
 }

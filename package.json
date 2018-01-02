@@ -27,6 +27,7 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^0.28.7",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
@@ -44,8 +45,10 @@
     "axios": "^0.17.1",
     "babel-plugin-async-to-promises": "^1.0.5",
     "babel-runtime": "^6.26.0",
+    "material-ui": "^0.20.0",
     "path": "^0.12.7",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-tap-event-plugin": "^3.0.2"
   }
 }

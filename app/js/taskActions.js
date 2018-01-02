@@ -1,22 +1,34 @@
 import sendRequest from './request';
 
 export default class TaskActions {
-    static async addtask(e){
-        e.preventDefault();
-        console.log(e);
+    static async getTasks() {
         const getReq = {
             method: 'GET',
             url: '/todos',
         }
-        const tasks = await sendRequest(getReq);
-
-        // for (const i of tasks) {
-        //     if (i.status === 0) {
-        //         i.status = '';
-        //     } else if (i.status === 1) {
-        //         i.status = 'checked';
-        //     }
-        // }
-        this.data.tasks = tasks;
+        return await sendRequest(getReq);
+    }
+    static async changeStatus(id, newStatus) {
+        const putReq = {
+            method: 'PUT',
+            url: '/todos',
+            data: {
+                _id: id,
+                status: newStatus,
+            }
+        }
+        return await sendRequest(putReq);
+    }
+    static async addTask(newTitle, newText) {
+        const postReq = {
+            method: 'POST',
+            url: '/todos',
+            data: {
+                title: newTitle,
+                text: newText,
+                status: 0,
+            },
+        };
+        return await sendRequest(postReq);
     }
 }
