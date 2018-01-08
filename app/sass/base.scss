@@ -41,9 +41,10 @@ body{
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    padding: 5px;
+    padding: 10px;
     border-radius: 5px;
     &_btn{   
+        margin-top: 20px !important;
         padding: 7px 10px;
         color: white !important;
     }
@@ -55,10 +56,11 @@ body{
 .task{
     list-style-type: none;
     &_form{
+        margin: 0 auto;
         display: flex;
         flex-wrap: wrap;
         flex-direction: column;
-        width: 100%;
+        width: 300px;
         border: 1px solid rgb(200, 197, 197);
         border-radius: 5px !important;
         min-height: 45px;
@@ -71,9 +73,10 @@ body{
         margin-top: 5px;
     }
     &_checkbox{
+        margin: 0 !important;
         width: 65% !important;
         padding-top: 5px;
-        margin-left: 15px;
+        margin-left: 15px !important;
     }
     &_checkbox > div {
         height: 24px !important;

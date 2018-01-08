@@ -5,10 +5,40 @@ import TaskActions from './taskActions';
 import TasksList from './tasksList.jsx';
 import NewTaskForm from './newTaskForm.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import {MuiThemeProvider} from 'material-ui/styles';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import {lightBlue, red} from 'material-ui/colors';
+import injectSheet from 'react-jss';
+import { withStyles } from 'material-ui/styles';
 
 injectTapEventPlugin();
 
+const theme = createMuiTheme({
+    palette: {
+      primary: lightBlue,
+      error: red,
+    }
+  });
+
+const styles = theme => ({
+    todo: {
+        background: '#eee',
+        margin: '0 auto',
+        display: 'flex',
+        justifyContent: 'center',
+        width: '60%',
+        maxWidth: '500px',
+        flexwrap: 'wrap',
+        flexDirection: 'column'
+    },
+    todo_title: {
+
+    },
+    tasks: {
+
+    }
+  });
+
+@withStyles(styles)
 class ToDo extends React.Component{
     state = {
         tasks: []
@@ -39,10 +69,10 @@ class ToDo extends React.Component{
         })
     }
     render() {
-        console.log('todo render');
-        return (
-            <MuiThemeProvider>
-                <div className='todo'>
+        console.log('todo render', this.props);
+        const MyKomponent = (
+        <MuiThemeProvider theme={theme}>
+                <div className=''>
                 <h1 className='todo_title'>My todo</h1>
                     <NewTaskForm onAddTask = {this.onAddTask}/>
                     <div className='tasks'>
@@ -55,7 +85,8 @@ class ToDo extends React.Component{
                     </div>
                 </div>
             </MuiThemeProvider>
-        )
+        );
+        return MyKomponent;
     }
 };
 
