@@ -19,6 +19,18 @@ export default class TaskActions {
         }
         return await sendRequest(putReq);
     }
+    static async editTask(id, newTitle, newText) {
+        const putReq = {
+            method: 'PUT',
+            url: '/todos',
+            data: {
+                _id: id,
+                title: newTitle,
+                text: newText
+            }
+        }
+        return await sendRequest(putReq);
+    }
     static async addTask(newTitle, newText) {
         const postReq = {
             method: 'POST',
@@ -30,5 +42,12 @@ export default class TaskActions {
             },
         };
         return await sendRequest(postReq);
+    }
+    static async delTask(id) {
+        const delReq = {
+            method: 'DELETE',
+            url: `/todos/${id}`
+        };
+        return await sendRequest(delReq);
     }
 }

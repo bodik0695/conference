@@ -33,10 +33,13 @@ body{
     opacity: .6;
     color: white !important;
 }
+.myCloseBtn{
+    background: rgb(226, 37, 37) !important;
+}
 .myBtn:hover {
     opacity: 1;
 }
-.newTaskForm{
+.taskForm{
     display: flex;
     justify-content: center;
     flex-direction: column;

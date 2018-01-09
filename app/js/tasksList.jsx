@@ -9,10 +9,13 @@ export default class TasksList extends React.Component{
                 {
                     this.props.tasks.map((item) => {
                         return <Task 
-                            key={item._id}
+                            key = {item._id}
                             identificator = {item._id}
-                            task={item}
-                            changeStatus={this.props.changeStatus} 
+                            task = {item}
+                            onChangeStatus = {this.props.onChangeStatus}
+                            onDeleteTask = {this.props.onDeleteTask}
+                            onEditTask = {this.props.onEditTask}
+                            onOpenCloseModal = {this.props.onOpenCloseModal}
                         />
                     })
                 }

@@ -1,14 +1,16 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import Checkbox from 'material-ui/Checkbox';
-import { SvgIcon } from 'material-ui';
-import EditIcon from './editIcon.jsx';
-import DelIcon from './delIcon.jsx';
+// import { SvgIcon } from 'material-ui';
+// import EditIcon from './editIcon.jsx';
+// import DelIcon from './delIcon.jsx';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import { Delete, Edit } from 'material-ui-icons';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import Grid from 'material-ui/Grid';
+// import PropTypes from 'prop-types';
 
 const styles = theme => ({
     task_form: {
@@ -28,16 +30,24 @@ const styles = theme => ({
 
 export default class Task extends React.PureComponent{
     state = {
-        checked: false
+        checked: false,
+        justify: 'space-around'
     }
 
     updateCheck = () => {
-        this.setState((oldState) => {
-          return {
-            checked: !oldState.checked,
-          };
-        });
-        this.props.changeStatus(this.props.identificator, this.state.checked);
+        this.setState((oldState) => ({
+           checked: !oldState.checked
+        }));
+        this.props.onChangeStatus(this.props.identificator, this.state.checked);
+        // this.context.changeStatus(this.props.identificator, this.state.checked);
+
+    }
+    onDelTask = () => {
+        this.props.onDeleteTask(this.props.identificator);
+        // this.context.deleteTask(this.props.identificator);
+    }
+    onChangeTask = () => {
+        this.props.onOpenCloseModal(this.props.identificator, this.props.task.title, this.props.task.text); // id, title, text
     }
     componentWillMount() {
         this.setState(() => ({
@@ -49,33 +59,49 @@ export default class Task extends React.PureComponent{
             <Paper className='task_form' elevation={3}>
                 <form action='' name='task_form' className='task_form'>
                     <div className='task_baseElements'>
-                        <FormControlLabel
-                            control = {
-                                 <Checkbox
-                                 checked={this.state.checked}
-                                 onChange={this.updateCheck}
-                                />
-                            }
-                            label = {this.props.task.title}
-                            className='task_checkbox'
-                        />
-                        <IconButton
-                            className='myBtn task_btn'
-                            title='Edit Task'
-                        >
-                        <Edit />
-                        </IconButton>
-                        <IconButton
-                            className='myBtn task_btn'
-                            title='Delete Task'
-                            color="primary"
-                        >
-                        <Delete />
-                        </IconButton>
+                    <Grid 
+                        container
+                        justify = {this.state.justify}
+                    >
+                        <Grid item sm={7}>
+                            <FormControlLabel
+                                control = {
+                                    <Checkbox
+                                    checked={this.state.checked}
+                                    onChange={this.updateCheck}
+                                    />
+                                }
+                                label = {this.props.task.title}
+                                // className='task_checkbox'
+                            />
+                        </Grid>
+                        <Grid item sm={4}>
+                            <IconButton
+                                className='myBtn task_btn'
+                                title='Edit Task'
+                                onClick = {this.onChangeTask}
+                            >
+                            <Edit />
+                            </IconButton>
+                            <IconButton
+                                className='myBtn task_btn'
+                                title='Delete Task'
+                                color='primary'
+                                onClick = {this.onDelTask}
+                            >
+                            <Delete />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
                     </div>
-                    <p className='task_text' title={this.props.task.text}>{this.props.task.text}</p>
+                    <p className='task_text' title={this.props.task.title}>{this.props.task.text}</p>
                 </form>
             </Paper>
         );
     }
 }
+
+// Task.contextTypes = {
+//     deleteTask: PropTypes.any,
+//     changeStatus: PropTypes.any
+// }
