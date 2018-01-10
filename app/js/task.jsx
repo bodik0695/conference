@@ -72,6 +72,8 @@ export default class Task extends React.PureComponent{
                                     />
                                 }
                                 label = {this.props.task.title}
+                                className = 'task_title'
+                                title = {this.props.task.title}
                                 // className='task_checkbox'
                             />
                         </Grid>
@@ -94,7 +96,7 @@ export default class Task extends React.PureComponent{
                         </Grid>
                     </Grid>
                     </div>
-                    <p className='task_text' title={this.props.task.title}>{this.props.task.text}</p>
+                    <p className='task_text' title={this.props.task.text}>{this.props.task.text}</p>
                 </form>
             </Paper>
         );

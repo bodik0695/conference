@@ -12,6 +12,10 @@ import { withStyles } from 'material-ui/styles';
 // import PropTypes from 'prop-types';
 import Button from 'material-ui/Button/Button';
 import MyModal from './myModal.jsx';
+import Actions  from './actions';
+import todoApp from './reducers';
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
 
 
 injectTapEventPlugin();
@@ -102,9 +106,11 @@ class ToDo extends React.PureComponent{
         }
     }
     onEditTask = (id, newTitle, newText) => {
-        let respons = TaskActions.editTask(id, newTitle, newText);
-        this.onOpenCloseModal();
-        this.onGetTasks();
+        if (id && newTitle && newText) {
+            let respons = TaskActions.editTask(id, newTitle, newText);
+            this.onOpenCloseModal();
+            this.onGetTasks();
+        }
     }
     componentWillMount() {
         TaskActions.getTasks().then((res) => {
@@ -147,5 +153,24 @@ class ToDo extends React.PureComponent{
 //     deleteTask: PropTypes.func,
 //     changeStatus: PropTypes.any
 // };
+
+const store = createStore(
+    todoApp,
+    applyMiddleware(
+        thunkMiddleware
+      )
+    
+);
+
+console.log(store.getState())
+
+let unsubscribe = store.subscribe(() =>
+  console.log(store.getState())
+);
+
+store.dispatch(Actions.addTodo('title_1', 'text_1', 0));
+store.dispatch(Actions.addTodo('title_2', 'text_2', 0));
+store.dispatch(Actions.getTodos()).then(() => console.log(store.getState()));
+unsubscribe();
 
 ReactDOM.render(<ToDo />, document.getElementById('container'));

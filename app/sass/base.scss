@@ -96,6 +96,12 @@ body{
         width: 20px;
         height: 20px;
     }
+    &_title > span{
+        width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     &_text{
         @extend %formText;  
     }
