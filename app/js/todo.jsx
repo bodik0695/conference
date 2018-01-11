@@ -168,9 +168,12 @@ let unsubscribe = store.subscribe(() =>
   console.log(store.getState())
 );
 
-store.dispatch(Actions.addTodo('title_1', 'text_1', 0));
-store.dispatch(Actions.addTodo('title_2', 'text_2', 0));
-store.dispatch(Actions.getTodos()).then(() => console.log(store.getState()));
+store.dispatch(Actions.addTask('title_1', 'text_1', 0))
+.then(() => store.dispatch(Actions.getTasks())
+.then(() => console.log(store.getState())));
+// .then(() => store.dispatch(Actions.delTask))
+// store.dispatch(Actions.addTodo('title_2', 'text_2', 0));
+// store.dispatch(Actions.getTodos()).then(() => console.log(store.getState()));
 unsubscribe();
 
 ReactDOM.render(<ToDo />, document.getElementById('container'));

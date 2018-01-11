@@ -1,26 +1,27 @@
 // import addTodo from './actions';
 
 const initialState = {
-    todos: []
+    todos: [],
+    response: ''
 }
 
 export default function todoApp(state = initialState, action) {
     switch (action.type) {
-        case 'ADD_TODO':
+        case 'ADD_TASK':
             return [
                 ...state,
                 {
-                    title: action.title,
-                    text: action.text,
-                    status:  action.status
+                    response: action.response
                 }
             ]
-        case 'GET_TODOS':
+        case 'GET_TASKS':
+        // return Object.assign({}, state, action)
             return [
                 ...state,
                 {
                     todos: action.todos
                 }
+                
             ]
         default:
             return state
