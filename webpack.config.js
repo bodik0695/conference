@@ -14,10 +14,7 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: [/node_modules/],
                 use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['react', 'env', 'es2017'],
-                    },
+                    loader: 'babel-loader'
                 },
             },
             {
@@ -30,6 +27,7 @@ module.exports = {
         ],
     },
     devServer: {
+        historyApiFallback: true,
         port: 4000,
         proxy: {
             '/todos': {

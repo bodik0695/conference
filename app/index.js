@@ -1,8 +1,14 @@
 import 'babel-polyfill';
 import 'babel-plugin-transform-class-properties';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import './sass/base.scss';
-import './js/todo.jsx';
 // import React from 'react';
 // import ReactDOM from 'react-dom';
-// import './js/task.jsx';
+import App from './js/app.jsx';
 
+
+
+
+
+ReactDOM.render(<App />, document.getElementById('container'));
