@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from "prop-types";
+import { Link } from 'react-router-dom';
 
 
-export default class Hello extends React.Component {
+export default class Test extends React.Component {
     constructor(props) {
        super(props);
        this.state = {name: "Tom"};
@@ -13,7 +14,13 @@ export default class Hello extends React.Component {
        );
     }
     render() {
-       return <h1>Hello {this.state.name}</h1>;
+        console.log(this.props);
+       return (
+           <div>
+               <h1>Hello {this.state.name}</h1>
+                <Link to='/'>Home</Link>
+           </div>
+    );
     }
  };
  
