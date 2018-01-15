@@ -27,6 +27,7 @@ module.exports = {
         ],
     },
     devServer: {
+        historyApiFallback: true,
         port: 4000,
         proxy: {
             '/todos': {

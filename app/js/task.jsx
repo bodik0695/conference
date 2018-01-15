@@ -10,6 +10,7 @@ import { withStyles } from 'material-ui/styles';
 import { Delete, Edit } from 'material-ui-icons';
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Grid from 'material-ui/Grid';
+import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 
 const styles = theme => ({
@@ -33,6 +34,12 @@ export default class Task extends React.PureComponent{
         checked: false,
         justify: 'space-around'
     }
+    
+    componentWillMount() {
+        this.setState(() => ({
+             checked: this.props.task.status == 1 ? true : false
+        }));
+    }
 
     updateCheck = () => {
         this.setState((oldState) => ({
@@ -49,11 +56,7 @@ export default class Task extends React.PureComponent{
     onChangeTask = () => {
         this.props.onOpenCloseModal(this.props.identificator, this.props.task.title, this.props.task.text); // id, title, text
     }
-    componentWillMount() {
-        this.setState(() => ({
-             checked: this.props.task.status == 1 ? true : false
-        }));
-    }
+
     render() {
         return (
             <Paper className='task_form' elevation={3}>
@@ -74,17 +77,21 @@ export default class Task extends React.PureComponent{
                                 label = {this.props.task.title}
                                 className = 'task_title'
                                 title = {this.props.task.title}
-                                // className='task_checkbox'
                             />
                         </Grid>
                         <Grid item sm={4}>
-                            <IconButton
-                                className='myBtn task_btn'
-                                title='Edit Task'
-                                onClick = {this.onChangeTask}
+                            <Link 
+                            to='/changeform'
+                            params={{ testvalue: 'hello' }}
                             >
-                            <Edit />
-                            </IconButton>
+                                <IconButton
+                                    className='myBtn task_btn'
+                                    title='Edit Task'
+                                    // onClick = {this.onChangeTask}
+                                >
+                                <Edit />
+                                </IconButton>
+                            </Link>
                             <IconButton
                                 className='myBtn task_btn'
                                 title='Delete Task'

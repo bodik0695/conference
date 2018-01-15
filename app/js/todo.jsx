@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import sendRequest from './request';
 import TaskActions from './taskActions';
 import TasksList from './tasksList.jsx';
@@ -9,14 +8,11 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import {lightBlue, red} from 'material-ui/colors';
 import injectSheet from 'react-jss';
 import { withStyles } from 'material-ui/styles';
+import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import Button from 'material-ui/Button/Button';
 import MyModal from './myModal.jsx';
 import Actions  from './actions';
-import todoApp from './reducers';
-import { createStore, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-
 
 injectTapEventPlugin();
 
@@ -49,7 +45,7 @@ const styles = theme => ({
 @withStyles(styles)
 class ToDo extends React.PureComponent{
     state = {
-        tasks: [],
+        tasks: this.props.todosStore.todos,
         openModal: false,
         editedTask: {
             title: '',
@@ -61,26 +57,57 @@ class ToDo extends React.PureComponent{
     //     deleteTask: this.onDeleteTask,
     //     changeStatus: this.onChangeStatus
     // });
-      
+    componentWillMount() {
+        this.props.onGetTasks();
+        // .then((response) => {
+        //     this.setState(() => ({
+        //             tasks: response.todos
+        //     }));
+        // });
+        // TaskActions.getTasks().then((res) => {
+        //     const resolve = res;
+        //     this.setState(() => ({
+        //             tasks: resolve
+        //     }));
+        // });
+    }
+    componentWillReceiveProps(store, nextState) {
+        this.setState({
+            tasks: store.todosStore.todos
+        })
+    }
     onGetTasks = () => {
-        TaskActions.getTasks().then((res) => {
-            const resolve = res;
-            this.setState(() => ({
-                    tasks: resolve
-            }));
-        });
+        TaskActions.getTasks();
+        // .then(() => {
+        //     this.setState(() => ({
+        //             tasks: this.props.todosStore.todos
+        //     }));
+        // });
     };
     onAddTask = (dataForNewTask) => {
-        TaskActions.addTask(dataForNewTask.title, dataForNewTask.text);
-        this.onGetTasks();
+        this.props.onAddTask(dataForNewTask.title, dataForNewTask.text, 0);
+            // .then(() => {
+            //     this.setState(() => ({
+            //         tasks: this.props.todosStore.todos
+            //     }));
+            // });
+        // TaskActions.addTask(dataForNewTask.title, dataForNewTask.text);
+        // this.onGetTasks();
     };
     onChangeStatus = (id, status) => {
        status = status === true ? 0 : 1;
-       let response = TaskActions.changeStatus(id, status);
+       this.props.onUpdateStatus(id, status);
+    //    let response1 = TaskActions.changeStatus(id, status);
     };
     onDeleteTask = (id) => {
-        let response = TaskActions.delTask(id);
-        this.onGetTasks();
+        this.props.onDeleteTask(id)
+            // .then(() => {
+            //     this.setState(() => {
+            //         tasks: this.props.todosStore.todos
+            //     });
+            // });
+        // let response = TaskActions.delTask(id);
+        // this.onGetTasks();
     }
     onOpenCloseModal = (id, title, text) => {
         if (id && title && text) {
@@ -107,46 +134,44 @@ class ToDo extends React.PureComponent{
     }
     onEditTask = (id, newTitle, newText) => {
         if (id && newTitle && newText) {
-            let respons = TaskActions.editTask(id, newTitle, newText);
+            this.props.onUpdateTask(id, newTitle, newText);
+                // .then(() => {
+                //     this.setState(() => {
+                //         tasks: this.props.todosStore.todos
+                //     });
+                // });
+            // let respons = TaskActions.editTask(id, newTitle, newText);
             this.onOpenCloseModal();
-            this.onGetTasks();
+            // this.onGetTasks();
         }
-    }
-    componentWillMount() {
-        TaskActions.getTasks().then((res) => {
-            const resolve = res;
-            this.setState(() => ({
-                    tasks: resolve
-            }));
-        });
     }
     render() {
         console.log('todo render');
-        const MyKomponent = (
-        <MuiThemeProvider theme={theme}>
-                <div className=''>
-                <h1 className='todo_title'>My todo</h1>
-                    <TaskForm onAddTask = {this.onAddTask}/>
-                    <div className='tasks'>
-                        <TasksList 
-                            id='tasksList'
-                            className='tasksList'
-                            tasks={this.state.tasks}
-                            onChangeStatus={this.onChangeStatus}
-                            onDeleteTask = {this.onDeleteTask}
-                            onOpenCloseModal = {this.onOpenCloseModal}
-                        />
+        console.log(this.props.todosStore);
+        return (
+            <MuiThemeProvider theme={theme}>
+                    <div className=''>
+                    <h1 className='todo_title'>My todo</h1>
+                        <TaskForm onAddTask = {this.onAddTask}/>
+                        <div className='tasks'>
+                            <TasksList 
+                                id='tasksList'
+                                className='tasksList'
+                                tasks={this.state.tasks}
+                                onChangeStatus={this.onChangeStatus}
+                                onDeleteTask = {this.onDeleteTask}
+                                onOpenCloseModal = {this.onOpenCloseModal}
+                            />
+                        </div>
                     </div>
-                </div>
-                <MyModal 
-                    openModal = {this.state.openModal} 
-                    onEditTask = {this.onEditTask}
-                    onOpenCloseModal = {this.onOpenCloseModal}
-                    editedTask = {this.state.editedTask}
-                />
+                    <MyModal 
+                        openModal = {this.state.openModal} 
+                        onEditTask = {this.onEditTask}
+                        onOpenCloseModal = {this.onOpenCloseModal}
+                        editedTask = {this.state.editedTask}
+                    />
             </MuiThemeProvider>
         );
-        return MyKomponent;
     }
 };
 // ToDo.childContextTypes = {
@@ -154,26 +179,15 @@ class ToDo extends React.PureComponent{
 //     changeStatus: PropTypes.any
 // };
 
-const store = createStore(
-    todoApp,
-    applyMiddleware(
-        thunkMiddleware
-      )
-    
-);
-
-console.log(store.getState())
-
-let unsubscribe = store.subscribe(() =>
-  console.log(store.getState())
-);
-
-store.dispatch(Actions.addTask('title_1', 'text_1', 0))
-.then(() => store.dispatch(Actions.getTasks())
-.then(() => console.log(store.getState())));
-// .then(() => store.dispatch(Actions.delTask))
-// store.dispatch(Actions.addTodo('title_2', 'text_2', 0));
-// store.dispatch(Actions.getTodos()).then(() => console.log(store.getState()));
-unsubscribe();
-
-ReactDOM.render(<ToDo />, document.getElementById('container'));
+export default connect(
+    state => ({
+        todosStore: state.todoApp
+    }),
+    dispatch => ({
+        onGetTasks: () => dispatch(Actions.getTasks()),
+        onAddTask: (title, text, status) => dispatch(Actions.addTask(title, text, status)),
+        onUpdateTask: (id, newTitle, newText) => dispatch(Actions.updateTask(id, newTitle, newText)),
+        onUpdateStatus: (id, newStatus) => dispatch(Actions.updateStatus(id, newStatus)),
+        onDeleteTask: (id) => dispatch(Actions.delTask(id))
+    })
+)(ToDo);

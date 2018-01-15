@@ -15,6 +15,9 @@ $simple-border: 1px solid #eee;
 *{
     margin: 0;
 }
+a{
+    text-decoration: none !important;
+}
 body{
     display: flex;
     justify-content: center;
@@ -35,6 +38,7 @@ body{
 }
 .myCloseBtn{
     background: rgb(226, 37, 37) !important;
+    width: 100%;
 }
 .myBtn:hover {
     opacity: 1;

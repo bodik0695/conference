@@ -9,8 +9,6 @@ import Actions from './actions';
 
 import { Link } from 'react-router-dom';
 
-const redColor = red[500];
-
 const initialFormState = {
     title: '',
     text: '',
@@ -23,7 +21,7 @@ const errValidationForm = {
     invalidField: 'Поле не заполнено'
 }
 
-class TaskForm extends React.PureComponent{
+class ChangeForm extends React.PureComponent{
     state = {
         title: this.props.title,
         text: this.props.text,
@@ -32,6 +30,9 @@ class TaskForm extends React.PureComponent{
         titleValid: '',
         textValid: ''
     }; 
+    componentWillMount() {
+        // this.props.params.taskId
+    }
     onChangeValue = (e) => {
         const nameValid = `${[e.target.name]}Valid`;
         const nameCurrent = `${[e.target.name]}Current`;
@@ -69,6 +70,7 @@ class TaskForm extends React.PureComponent{
         }
     }
     render() {
+        console.log(this);
         return (
             <Paper className='task_form' elevation={3}>
                 <form action='' name='taskForm' className='taskForm'>
@@ -90,36 +92,30 @@ class TaskForm extends React.PureComponent{
                         value = {this.state.textCurrent}
                         helperText = {this.state.textValid}
                     />
-                    {this.props.newTask ? <Button
-                        className='myBtn taskForm_btn'
-                        onClick = {this.onTransmitState}
-                        title='Add Task'
-                    > Add </Button> : null
-                    }
-                    {this.props.editTask ? <React.Fragment>
+                    <React.Fragment>
                         <Button
                             className='myBtn taskForm_btn'
                             onClick = {this.onChangeTask}
                             title='Apply changes'
                         > Change </Button>
-                        <Button
-                            className='myBtn taskForm_btn myCloseBtn'
-                            onClick = {this.props.onOpenCloseModal}
-                            title='Close edit window'
-                            color = 'accent'
-                        > Close </Button> 
-                    </React.Fragment> : null
-                    }
+                        <Link to='/'>
+                            <Button
+                                className='myBtn taskForm_btn myCloseBtn'
+                                // onClick = {this.props.onOpenCloseModal}
+                                title='Close edit window'
+                                color = 'accent'
+                            > Close </Button>
+                        </Link> 
+                    </React.Fragment>
+                    
                 </form>
             </Paper>
         )
     }
 }
-TaskForm.defaultProps = {
+ChangeForm.defaultProps = {
     title: '',
-    text: '',
-    newTask: true,
-    editTask: false
+    text: ''
 };
 
 export default connect(
@@ -133,4 +129,4 @@ export default connect(
         onUpdateStatus: (id, newStatus) => dispatch(Actions.updateStatus(id, newStatus)),
         onDeleteTask: (id) => dispatch(Actions.delTask(id))
     })
-)(TaskForm);
+)(ChangeForm);
