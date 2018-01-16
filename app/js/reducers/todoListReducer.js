@@ -10,9 +10,7 @@ export const todoListReducer = createReducer(initialState, {
     [ActionTypes.GET_TASKS] (state, action) {
         return {
             ...state,
-            todos: [
-                ...action.todos
-            ]
+            todos: action.payload
         }
     },
     [ActionTypes.ADD_TASK] (state, action) {

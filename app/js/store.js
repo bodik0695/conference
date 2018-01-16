@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import { apiMiddleware } from 'redux-api-middleware';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { synchistoryWithStore } from 'react-router-redux';
 
@@ -10,6 +11,7 @@ export const store = createStore(
     composeWithDevTools(
         applyMiddleware(
             thunkMiddleware,
+            apiMiddleware
         )
     )
 );

@@ -19,7 +19,10 @@ export const App = () => (
         <HashRouter>
             <Switch >
                 <Route path='/' exact component={TodoList} />
-                <Route path='/taskDetails/:id' exact component={TaskDetails} />
+                <Route path='/taskDetails/:id' exact 
+                // render={({params}) => <TaskDetails taskId={params.id} 
+                component={TaskDetails}
+                />} />
             </Switch>
         </HashRouter>
     </Provider>

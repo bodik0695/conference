@@ -1,96 +1,118 @@
 import axios from 'axios';
 import ActionTypes from './actionTypes';
-import store from '../store';
+import { bindActionCreators } from 'redux';
+import { RSAA } from 'redux-api-middleware';
 
-const getTasks = () => dispatch => axios.get('/todos')
-    .then(response => dispatch(receiveTasks(response.data)));
-const receiveTasks = (todos) =>({
-    type: ActionTypes.GET_TASKS,
-    todos
+export const getTasks = () => ({
+    [RSAA]: {
+      endpoint: '/todos',
+      method: 'GET',
+      types: [
+            'REQUEST',
+            ActionTypes.GET_TASKS,
+            'FAILURE'
+      ]
+    }
 });
 
-const getTask = (id) => dispatch => axios.get(`/todos/${id}`)
-    .then(response => dispatch(receiveTask(response.data)));
-const receiveTask = (task) =>({
-    type: ActionTypes.GET_TASK,
-    task
+export const getTask = (id) => ({
+    [RSAA]: {
+      endpoint: `/todos/${id}`,
+      method: 'GET',
+      types: [
+            'REQUEST',
+            ActionTypes.GET_TASK,
+            'FAILURE'
+      ]
+    }
 });
+// export const getTask = (id) => ({
+//     [RSAA]: {
+//       endpoint: `/todos/${id}`,
+//       method: 'GET',
+//       types: [
+//             'REQUEST',
+//             {
+//                 type: ActionTypes.GET_TASK,
 
-const addTask = (newTitle, newText, newStatus) => {
+//             },
+//             'FAILURE'
+//       ]
+//     }
+// });
+
+export const addTask = (newTitle, newText, newStatus) => {
     const newTask = {
         title: newTitle,
         text: newText,
         status: newStatus
     }
+    
     return dispatch =>  axios.post('/todos', newTask)
-        .then(response => dispatch(appendTask(response.data)))
+        .then(response => dispatch({
+            type: ActionTypes.ADD_TASK,
+            newTask: response.data
+        }))
 };
-const appendTask = (newTask) => ({
-    type: ActionTypes.ADD_TASK,
-    newTask
-});
 
-const updateStatus = (id, newStatus) => {
+export const updateStatus = (id, newStatus) => {
     const changedTask  = {
-        _id: id,
         status: newStatus
     }
-    return dispatch => axios.put('/todos', changedTask)
+    return (dispatch, getState) => axios.put(`/todos/${id}`, changedTask)
         .then(response => {
-            const state = store.getState();
+            const state = getState();
             const taskPosition = findPosition(state.todoList.todos, response.data._id);
-            return dispatch(changeStatus(taskPosition, response.data))
+            
+            return dispatch({
+                type: ActionTypes.UPDATE_STATUS,
+                changedTask: response.data,
+                taskPosition
+            })
+        })
+}
+
+export const updateTask = (id, { title, text }) => {
+    const changedTask  = {
+        title,
+        text
+    }
+
+    return (dispatch, getState) => axios.put(`/todos/${id}`, changedTask)
+        .then(response => {
+            const { todos } = getState().todoList;
+            const taskPosition = findPosition(todos, response.data._id);
+
+            return dispatch({
+                type: ActionTypes.UPDATE_TASK,
+                taskPosition,
+                changedTask: response.data
+            });
         });
 }
-const changeStatus = (taskPosition, changedTask) => ({
-    type: ActionTypes.UPDATE_STATUS,
-    taskPosition,
-    changedTask
-})
 
-const updateTask = (id, newTitle, newText) => {
-    const changedTask  = {
-        _id: id,
-        title: newTitle,
-        text: newText
-    }
-    return dispatch => axios.put('/todos', changedTask)
-    .then(response => {
-        const state = store.getState();
-        const taskPosition = findPosition(state.todoList.todos, response.data._id);
-        return dispatch(changeTask(taskPosition, response.data))
-    });
-}
-const changeTask = (taskPosition, changedTask) => ({
-    type: ActionTypes.UPDATE_TASK,
-    taskPosition,
-    changedTask
-})
 
-const delTask = id => dispatch => axios.delete(`/todos/${id}`)
+export const delTask = id => (dispatch, getState) => axios.delete(`/todos/${id}`)
     .then(response => {
-        const state = store.getState();
+        const state = getState();
         const taskPosition = findPosition(state.todoList.todos, id);
-        return dispatch(deletedTask(taskPosition))
+        return dispatch({
+            type: ActionTypes.DELETE_TASK,
+            taskPosition
+        })
     });
 
-const deletedTask = taskPosition => ({
-    type: ActionTypes.DELETE_TASK,
-    taskPosition
-});
-
-const findTask = id => dispatch => {
-    const state = store.getState();
-    const taskPosition = findPosition(state.todoList.todos, id);
-    return dispatch(chooseTask(state.todoList.todos[taskPosition]))
+export const findTask = id => (dispatch, getState) => {
+    const state = getState();
+    const task = state.todoList.todos.find(todo => todo._id === id);
+    const { todos } = state.todoList;
+    return dispatch({ 
+        type: ActionTypes.FIND_TASK,
+        task
+    })
 }
 
-const chooseTask = (task) => ({
-    type: ActionTypes.FIND_TASK,
-    task
-});
-
-const findPosition = (arr, id) => {
+export const findPosition = (arr, id) => {
     let position;
     arr.forEach((item, key) => {
         if (item._id === id) {
@@ -99,4 +121,3 @@ const findPosition = (arr, id) => {
     });
     return position;
 }
-export default {getTasks, getTask, addTask, updateStatus, updateTask, delTask, findTask}

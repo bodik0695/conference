@@ -19,7 +19,7 @@ export const detailsReducer = createReducer(initialState, {
         return {
             ...state,
             task: {
-                ...action.task
+                ...action.payload
             }
         }
     }

@@ -8,7 +8,9 @@ import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Grid from 'material-ui/Grid';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Actions from '../actions/todoActions';
+import { bindActionCreators } from 'redux';
+
+import { updateStatus, delTask } from '../actions/todoActions';
 
 const styles = theme => ({
     task_form: {
@@ -33,16 +35,17 @@ class Task extends React.PureComponent{
     }
     
     componentWillMount() {
-        this.setState(() => ({
+        this.setState({
              checked: this.props.task.status === 1 ? true : false
-        }));
+        });
     }
-
+    componentWillReceiveProps(props) {
+        this.setState({
+            checked: props.task.status === 1 ? true : false
+        })
+    }
     updateCheck = () => {
-        this.setState((oldState) => ({
-           checked: !oldState.checked
-        }));
-        const status = this.state.checked? 0 : 1;
+        const status = this.state.checked ? 0 : 1;
         this.props.onUpdateStatus(this.props.identificator, status);
 
     }
@@ -78,12 +81,10 @@ class Task extends React.PureComponent{
                         <Grid item sm={4}>
                             <Link 
                             to={`/taskDetails/${this.props.identificator}`}
-                            params={{ id: '1234' }}
                             >
                                 <IconButton
                                     className='myBtn task_btn'
                                     title='Edit Task'
-                                    // onClick = {this.onChangeTask}
                                 >
                                 <Edit />
                                 </IconButton>
@@ -110,9 +111,8 @@ export default connect(
     state => ({
         todosStore: state.todoList
     }),
-    dispatch => ({
-        onUpdateStatus: (id, newStatus) => dispatch(Actions.updateStatus(id, newStatus)),
-        onDeleteTask: (id) => dispatch(Actions.delTask(id)),
-        onFindTask: (id) => dispatch(Actions.findTask(id))
-    })
+    dispatch => bindActionCreators({
+        onUpdateStatus: updateStatus,
+        onDeleteTask: delTask
+    }, dispatch)
 )(Task);
