@@ -12,10 +12,6 @@ export default class TasksList extends React.Component{
                             key = {item._id}
                             identificator = {item._id}
                             task = {item}
-                            // onChangeStatus = {this.props.onChangeStatus}
-                            // onDeleteTask = {this.props.onDeleteTask}
-                            // onEditTask = {this.props.onEditTask}
-                            // onOpenCloseModal = {this.props.onOpenCloseModal}
                         />
                     })
                 }

@@ -1,26 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { Provider, connect } from 'react-redux';
-
-import ToDo from './pages/main/todoList/todoList.jsx';
-// import ChangeForm from './changeForm.jsx';
 import {
     BrowserRouter as Router,
+    HashRouter,
     Route,
     Link,
     Switch
 } from 'react-router-dom';
+
+import TodoList from './pages/main/todoList/todoList.jsx';
+import TaskDetails from './pages/main/taskDetails/taskDetails.jsx';
 import { store } from './store';
+
 
 export const App = () => (
     <Provider store = {store}>
-        <Router>
+        <HashRouter>
             <Switch >
-                <Route path='/' exact component={ToDo} />
-                {/* <Route path='/changeform' exact component={ChangeForm} /> */}
+                <Route path='/' exact component={TodoList} />
+                <Route path='/taskDetails/:id' exact component={TaskDetails} />
             </Switch>
-        </Router>
+        </HashRouter>
     </Provider>
 );
 

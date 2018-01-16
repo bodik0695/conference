@@ -8,5 +8,4 @@ export default combineReducers({
     routing: routerReducer,
     todoList: todoListReducer,
     taskDetails: detailsReducer
-    // todoDetail: todoDetailReducer
 });

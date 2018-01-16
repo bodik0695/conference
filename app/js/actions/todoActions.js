@@ -9,6 +9,13 @@ const receiveTasks = (todos) =>({
     todos
 });
 
+const getTask = (id) => dispatch => axios.get(`/todos/${id}`)
+    .then(response => dispatch(receiveTask(response.data)));
+const receiveTask = (task) =>({
+    type: ActionTypes.GET_TASK,
+    task
+});
+
 const addTask = (newTitle, newText, newStatus) => {
     const newTask = {
         title: newTitle,
@@ -92,4 +99,4 @@ const findPosition = (arr, id) => {
     });
     return position;
 }
-export default {getTasks, addTask, updateStatus, updateTask, delTask, findTask}
+export default {getTasks, getTask, addTask, updateStatus, updateTask, delTask, findTask}

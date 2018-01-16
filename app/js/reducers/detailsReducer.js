@@ -14,6 +14,14 @@ export const detailsReducer = createReducer(initialState, {
                 ...action.task
             }
         }
+    },
+    [ActionTypes.GET_TASK] (state, action) {
+        return {
+            ...state,
+            task: {
+                ...action.task
+            }
+        }
     }
 });
 export default detailsReducer;

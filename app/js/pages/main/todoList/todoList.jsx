@@ -4,8 +4,6 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import {lightBlue, red} from 'material-ui/colors';
 import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
-// import Button from 'material-ui/Button/Button';
-// import MyModal from './myModal.jsx';
 
 import TasksList from '../../../components/tasksList.jsx';
 import TaskForm from '../../../components/taskForm.jsx';
@@ -38,9 +36,6 @@ class TodoList extends React.PureComponent{
             tasks: store.todosStore.todos
         })
     }
-    onGetTasks = () => {
-        TaskActions.getTasks();
-    };
     onAddTask = (dataForNewTask) => {
         this.props.onAddTask(dataForNewTask.title, dataForNewTask.text, 0);
     };
@@ -71,9 +66,9 @@ export default connect(
     dispatch => ({
         onGetTasks: () => dispatch(Actions.getTasks()),
         onAddTask: (title, text, status) => dispatch(Actions.addTask(title, text, status)),
-        onUpdateTask: (id, newTitle, newText) => dispatch(Actions.updateTask(id, newTitle, newText)),
-        onUpdateStatus: (id, newStatus) => dispatch(Actions.updateStatus(id, newStatus)),
-        onDeleteTask: (id) => dispatch(Actions.delTask(id)),
-        onFindTask: (id) => dispatch(Actions.findTask(id))
+        // onUpdateTask: (id, newTitle, newText) => dispatch(Actions.updateTask(id, newTitle, newText)),
+        // onUpdateStatus: (id, newStatus) => dispatch(Actions.updateStatus(id, newStatus)),
+        // onDeleteTask: (id) => dispatch(Actions.delTask(id)),
+        // onFindTask: (id) => dispatch(Actions.findTask(id))
     })
 )(TodoList);

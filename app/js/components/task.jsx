@@ -48,8 +48,6 @@ class Task extends React.PureComponent{
     }
     onChangeTask = () => {
         this.props.onFindTask(this.props.identificator);
-        // this.props.onOpenCloseModal(this.props.identificator, this.props.task.title, this.props.task.text); // id, title, text
-        // this.props.onChangeTask(this.props.identificator);
     }
     onDelTask = () => {
         this.props.onDeleteTask(this.props.identificator);
@@ -79,13 +77,13 @@ class Task extends React.PureComponent{
                         </Grid>
                         <Grid item sm={4}>
                             <Link 
-                            to='/changeform'
-                            params={{ testvalue: 'hello' }}
+                            to={`/taskDetails/${this.props.identificator}`}
+                            params={{ id: '1234' }}
                             >
                                 <IconButton
                                     className='myBtn task_btn'
                                     title='Edit Task'
-                                    onClick = {this.onChangeTask}
+                                    // onClick = {this.onChangeTask}
                                 >
                                 <Edit />
                                 </IconButton>

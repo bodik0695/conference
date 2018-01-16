@@ -3,10 +3,12 @@ import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import { FlatButton } from 'material-ui';
 import { Paper } from 'material-ui';
+import { red } from 'material-ui/colors';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Actions from '../actions/todoActions';
+import Actions from '../../../actions/todoActions';
+
 
 const initialFormState = {
     title: '',
@@ -18,13 +20,22 @@ const errValidationForm = {
     invalidField: 'Поле не заполнено'
 }
 
-class TaskForm extends React.PureComponent{
+class ChangeForm extends React.PureComponent{
     state = {
-        title: this.props.title,
-        text: this.props.text,
+        title: '',
+        text: '',
         titleValid: '',
         textValid: ''
     }; 
+    componentWillMount() {
+        this.props.onGetTask(this.props.match.params.id)
+            .then(() => {
+                this.setState({
+                    title: this.props.detailsStore.task.title,
+                    text: this.props.detailsStore.task.text
+                })
+            })
+    }
     onChangeValue = (e) => {
         const nameValid = `${[e.target.name]}Valid`;
         if (!e.target.value) {
@@ -38,22 +49,12 @@ class TaskForm extends React.PureComponent{
         }
         this.setState({[e.target.name]: e.target.value})
     };
-    onTransmitState = () => {
+    onChangeTask = () => {
         if (this.state.title !== '' && this.state.text !== '') {
-            this.props.onAddTask(this.state.title, this.state.text, 0);
+            this.props.onUpdateTask(this.props.match.params.id, this.state.title, this.state.text);
             this.setState(initialFormState);
-        } else if (!this.state.title && !this.state.text) {
-            this.setState({
-                titleValid: errValidationForm.invalidField,
-                textValid: errValidationForm.invalidField
-            })
-        } else if (!this.state.title) {
-            this.setState({titleValid: errValidationForm.invalidField})
-        } else if (!this.state.text) {
-            this.setState({textValid: errValidationForm.invalidField})
-        };
+        }
     }
-    
     render() {
         return (
             <Paper className='task_form' elevation={3}>
@@ -76,26 +77,41 @@ class TaskForm extends React.PureComponent{
                         value = {this.state.text}
                         helperText = {this.state.textValid}
                     />
-                    <Button
-                        className='myBtn taskForm_btn -top20'
-                        onClick = {this.onTransmitState}
-                        title='Add Task'
-                    > Add </Button>
+                    <React.Fragment>
+                    <Link 
+                        to={this.state.title && this.state.text ? '/' : this.props.match.url}
+                        className='taskForm_link'
+                    >
+                            <Button
+                                className='myBtn taskForm_btn'
+                                onClick = {this.onChangeTask}
+                                title='Apply changes'
+                            > Change </Button>
+                    </Link> 
+                    <Link 
+                        to='/'
+                        className='taskForm_link'
+                    >
+                            <Button
+                                className='myBtn taskForm_btn myCloseBtn'
+                                title='Close edit window'
+                                color = 'accent'
+                            > Close </Button>
+                        </Link> 
+                    </React.Fragment>
                 </form>
             </Paper>
         )
     }
 }
-TaskForm.defaultProps = {
-    title: '',
-    text: ''
-};
 
 export default connect(
     state => ({
-        todosStore: state
+        detailsStore: state.taskDetails
     }),
     dispatch => ({
-        onAddTask: (title, text, status) => dispatch(Actions.addTask(title, text, status))
+        onUpdateTask: (id, newTitle, newText) => dispatch(Actions.updateTask(id, newTitle, newText)),
+        onGetTask: (id) => dispatch(Actions.getTask(id)),
+        onFindTask: (id) => dispatch(Actions.findTask(id))
     })
-)(TaskForm);
+)(ChangeForm);
