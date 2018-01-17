@@ -113,7 +113,7 @@ export const findTask = id => (dispatch, getState) => {
 }
 
 export const findPosition = (arr, id) => {
-    let position;
+    let position = -1;
     arr.forEach((item, key) => {
         if (item._id === id) {
             position = key;

@@ -5,6 +5,7 @@ import { FlatButton } from 'material-ui';
 import { Paper } from 'material-ui';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 
 import { addTask } from '../actions/todoActions';
 
@@ -14,8 +15,8 @@ const initialFormState = {
         text: '',
     },
     errors: {
-        titleValid: '',
-        textValid: ''
+        title: '',
+        text: ''
     }
 }
 const errValidationForm = {
@@ -29,25 +30,25 @@ class TaskForm extends React.PureComponent{
             text: ''
         },
         errors: {
-            titleValid: '',
-            textValid: ''
+            title: '',
+            text: ''
         }
     }; 
     onChangeValue = (e) => {
         const target = e.target;
-        const nameValid = `${[target.name]}Valid`;
+        // const nameValid = `${[target.name]}Valid`;
         if (target.value === '') {
             this.setState((prevState) => ({
                 errors: {
                     ...prevState.errors,
-                    [nameValid]: errValidationForm.invalidField
+                    [target.name]: errValidationForm.invalidField
                 }
             }))
         } else {
             this.setState((prevState) => ({
                 errors: {
                     ...prevState.errors,
-                    [nameValid]: ''
+                    [target.name]: ''
                 }
             }))
         };
@@ -65,22 +66,22 @@ class TaskForm extends React.PureComponent{
         } else if (this.state.form.title === '' && this.state.form.text === '') {
             this.setState({
                 errors: {
-                    titleValid: errValidationForm.invalidField,
-                    textValid: errValidationForm.invalidField
+                    title: errValidationForm.invalidField,
+                    text: errValidationForm.invalidField
                 }
             })
         } else if (this.state.form.title === '') {
             this.setState((prevState) => ({
                 errors: {
                     ...prevState.errors,
-                    titleValid: errValidationForm.invalidField
+                    title: errValidationForm.invalidField
                 }
             }))
         } else if (this.state.form.text === '') {
             this.setState((prevState) => ({
                 errors: {
                     ...prevState.errors,
-                    textValid: errValidationForm.invalidField
+                    text: errValidationForm.invalidField
                 }
             }))
         };
@@ -90,22 +91,24 @@ class TaskForm extends React.PureComponent{
             <Paper className='task_form' elevation={3}>
                 <form action='' name='taskForm' className='taskForm'>
                     <TextField
+                        error={!this.state.errors.title ? null : true}
                         className='taskForm_text'
                         label='Title'
                         name = 'title'
                         fullWidth
                         onChange = {this.onChangeValue}
                         value = {this.state.form.title}
-                        helperText = {this.state.errors.titleValid}
+                        helperText = {this.state.errors.title}
                     />
                     <TextField
+                        error={this.state.errors.text ? true : null }
                         className='taskForm_text'
                         label='Text'
                         name = 'text'
                         fullWidth
                         onChange = {this.onChangeValue}
                         value = {this.state.form.text}
-                        helperText = {this.state.errors.textValid}
+                        helperText = {this.state.errors.text}
                     />
                     <Button
                         className='myBtn taskForm_btn -top20'
@@ -122,7 +125,7 @@ export default connect(
     state => ({
         todosStore: state
     }),
-    dispatch => ({
-        onAddTask: (title, text, status) => dispatch(addTask(title, text, status))
-    })
+    dispatch => bindActionCreators({
+        onAddTask: addTask
+    }, dispatch)
 )(TaskForm);
