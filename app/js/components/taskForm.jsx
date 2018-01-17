@@ -13,11 +13,9 @@ const initialFormState = {
     form: {
         title: '',
         text: '',
+        status: 0
     },
-    errors: {
-        title: '',
-        text: ''
-    }
+    errors: {}
 }
 const errValidationForm = {
     invalidField: 'Поле не заполнено'
@@ -27,16 +25,15 @@ class TaskForm extends React.PureComponent{
     state = {
         form: {
             title: '',
-            text: ''
+            text: '',
+            status: 0
         },
-        errors: {
-            title: '',
-            text: ''
-        }
+        errors: {}
     }; 
     onChangeValue = (e) => {
+        console.log(this.state.form);
         const target = e.target;
-        // const nameValid = `${[target.name]}Valid`;
+
         if (target.value === '') {
             this.setState((prevState) => ({
                 errors: {
@@ -60,24 +57,25 @@ class TaskForm extends React.PureComponent{
         }));
     };
     onTransmitState = () => {
-        if (this.state.form.title !== '' && this.state.form.text !== '') {
-            this.props.onAddTask(this.state.form.title, this.state.form.text, 0);
+        const form = this.state.form;
+        if (form.title !== '' && form.text !== '') {
+            this.props.onAddTask(form);
             this.setState(initialFormState);
-        } else if (this.state.form.title === '' && this.state.form.text === '') {
+        } else if (form.title === '' && form.text === '') {
             this.setState({
                 errors: {
                     title: errValidationForm.invalidField,
                     text: errValidationForm.invalidField
                 }
             })
-        } else if (this.state.form.title === '') {
+        } else if (form.title === '') {
             this.setState((prevState) => ({
                 errors: {
                     ...prevState.errors,
                     title: errValidationForm.invalidField
                 }
             }))
-        } else if (this.state.form.text === '') {
+        } else if (form.text === '') {
             this.setState((prevState) => ({
                 errors: {
                     ...prevState.errors,

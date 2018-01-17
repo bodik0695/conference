@@ -46,7 +46,9 @@ class Task extends React.PureComponent{
     }
     updateCheck = () => {
         const status = this.state.checked ? 0 : 1;
-        this.props.onUpdateStatus(this.props.identificator, status);
+        const id = this.props.identificator;
+        
+        this.props.onUpdateStatus({id, status});
 
     }
     onChangeTask = () => {
@@ -90,7 +92,7 @@ class Task extends React.PureComponent{
                                 </IconButton>
                             </Link>
                             <IconButton
-                                className='myBtn task_btn'
+                                className={`myBtn task_btn ${this.props.className}`}
                                 title='Delete Task'
                                 color='primary'
                                 onClick = {this.onDelTask}

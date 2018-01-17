@@ -24,12 +24,13 @@ class ChangeForm extends React.PureComponent{
     }; 
 
     componentWillMount() {
-        this.props.onGetTask(this.props.match.params.id);
+        const id = this.props.match.params.id;
+        this.props.onGetTask(id);
     }
 
     componentWillReceiveProps(nextProps) {
-        const { title, text } = this.state.form
-
+        const { title, text } = this.state.form;
+        
         if (title === '' && text ==='') {
             this.setState({
                 form: {
@@ -140,6 +141,7 @@ export default connect(
     }),
     dispatch => bindActionCreators({
         onUpdateTask: updateTask,
-        onGetTask: getTask
+        onGetTask: getTask,
+        onPush: push
     }, dispatch)
 )(ChangeForm);

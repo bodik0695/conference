@@ -21,7 +21,7 @@ const theme = createMuiTheme({
 
 class TodoList extends React.PureComponent{
     componentWillMount() {
-         this.props.onGetTasks();
+        this.props.onGetTasks();
     }
     render() {
         return (

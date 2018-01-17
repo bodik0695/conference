@@ -5,102 +5,92 @@ import { RSAA } from 'redux-api-middleware';
 
 export const getTasks = () => ({
     [RSAA]: {
-      endpoint: '/todos',
-      method: 'GET',
-      types: [
+        endpoint: '/todos',
+        method: 'GET',
+        types: [
             'REQUEST',
             ActionTypes.GET_TASKS,
             'FAILURE'
-      ]
+        ]
     }
 });
 
 export const getTask = (id) => ({
     [RSAA]: {
-      endpoint: `/todos/${id}`,
-      method: 'GET',
-      types: [
+        endpoint: `/todos/${id}`,
+        method: 'GET',
+        types: [
             'REQUEST',
             ActionTypes.GET_TASK,
             'FAILURE'
-      ]
+        ]
     }
 });
-// export const getTask = (id) => ({
-//     [RSAA]: {
-//       endpoint: `/todos/${id}`,
-//       method: 'GET',
-//       types: [
-//             'REQUEST',
-//             {
-//                 type: ActionTypes.GET_TASK,
 
-//             },
-//             'FAILURE'
-//       ]
-//     }
-// });
-
-export const addTask = (newTitle, newText, newStatus) => {
-    const newTask = {
-        title: newTitle,
-        text: newText,
-        status: newStatus
+export const addTask = (form) => ({
+    [RSAA]: {
+        endpoint: '/todos',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(form),
+        types: [
+            'REQUEST',
+            ActionTypes.ADD_TASK,
+            'FAILURE'
+        ]
     }
-    
-    return dispatch =>  axios.post('/todos', newTask)
-        .then(response => dispatch({
-            type: ActionTypes.ADD_TASK,
-            newTask: response.data
-        }))
-};
+});
 
-export const updateStatus = (id, newStatus) => {
-    const changedTask  = {
-        status: newStatus
+export const updateStatus = ({id, status}) => ({
+    [RSAA]: {
+        endpoint: `/todos/${id}`,
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            status
+        }),
+        types: [
+            'REQUEST',
+            ActionTypes.UPDATE_STATUS,
+            'FAILURE'
+        ]
     }
-    return (dispatch, getState) => axios.put(`/todos/${id}`, changedTask)
-        .then(response => {
-            const state = getState();
-            const taskPosition = findPosition(state.todoList.todos, response.data._id);
-            
-            return dispatch({
-                type: ActionTypes.UPDATE_STATUS,
-                changedTask: response.data,
-                taskPosition
-            })
-        })
-}
+});
 
-export const updateTask = (id, { title, text }) => {
-    const changedTask  = {
-        title,
-        text
+export const updateTask = (id, { title, text }) => ({
+    [RSAA]: {
+        endpoint: `/todos/${id}`,
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            title,
+            text
+        }),
+        types: [
+            'REQUEST',
+            ActionTypes.UPDATE_TASK,
+            'FAILURE'
+        ]
     }
+});
 
-    return (dispatch, getState) => axios.put(`/todos/${id}`, changedTask)
-        .then(response => {
-            const { todos } = getState().todoList;
-            const taskPosition = findPosition(todos, response.data._id);
-
-            return dispatch({
-                type: ActionTypes.UPDATE_TASK,
-                taskPosition,
-                changedTask: response.data
-            });
-        });
-}
-
-
-export const delTask = id => (dispatch, getState) => axios.delete(`/todos/${id}`)
-    .then(response => {
-        const state = getState();
-        const taskPosition = findPosition(state.todoList.todos, id);
-        return dispatch({
-            type: ActionTypes.DELETE_TASK,
-            taskPosition
-        })
-    });
+export const delTask = (id) => ({
+    [RSAA]: {
+        endpoint: `/todos/${id}`,
+        method: 'DELETE',
+        types: [
+            'REQUEST',
+            ActionTypes.DELETE_TASK,
+            'FAILURE'
+        ]
+    }
+});
 
 export const findTask = id => (dispatch, getState) => {
     const state = getState();
@@ -110,14 +100,4 @@ export const findTask = id => (dispatch, getState) => {
         type: ActionTypes.FIND_TASK,
         task
     })
-}
-
-export const findPosition = (arr, id) => {
-    let position = -1;
-    arr.forEach((item, key) => {
-        if (item._id === id) {
-            position = key;
-        }
-    });
-    return position;
 }

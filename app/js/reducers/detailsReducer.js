@@ -1,6 +1,6 @@
 import { createReducer } from 'redux-create-reducer';
 import ActionTypes from '../actions/actionTypes';
-
+import findPosition from '../utils/findPosition';
 
 const initialState = {
     task: {}
