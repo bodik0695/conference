@@ -1,92 +1,123 @@
-$bkg-color: rgb(43, 224, 170);
+$bkg-color: #0288D1;
+$simple-border: 1px solid #eee;
+
+%formText{
+    margin: 0 auto;
+    width: 90%;
+    vertical-align: middle;
+    margin-top: 7px;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 *{
     margin: 0;
+}
+a{
+    text-decoration: none !important;
 }
 body{
     display: flex;
     justify-content: center;
 }
 .todo{
+    margin: 0 auto;
     display: flex;
     justify-content: center;
-    width: 80%;
+    width: 60%;
+    max-width: 500px;
     flex-wrap: wrap;
     flex-direction: column;
 }
 .myBtn{
-    border-radius: 5px;
-    background: $bkg-color;
-    border-color: $bkg-color;
+    background: $bkg-color !important;
+    opacity: .6;
+    color: white !important;
 }
-.newTaskForm{
+
+.-top20{
     margin-top: 20px;
-    &_title, &_text{
-        width: 100%;
-        border-radius: 5px;
-    }
+}
+.myCloseBtn{
+    background: rgb(226, 37, 37) !important;
+}
+.myBtn:hover {
+    opacity: 1;
+}
+.taskForm{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
     &_btn{   
+        // top: 20px;
         padding: 7px 10px;
-        color: white;
+        color: white !important;
+        width: 100%;
+    }
+    &_link{
+        margin-top: 20px;
     }
 }
 .tasksList{
-    padding: 0;
+    padding: 5px;
     margin-top: 10px;
 }
 .task{
     list-style-type: none;
     &_form{
-        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        width: 300px;
         border: 1px solid rgb(200, 197, 197);
-        border-radius: 5px;
+        border-radius: 5px !important;
+        min-height: 45px;
     }
     &_baseElements{
         display: flex;
         flex-direction: row;
-        align-items: center;
+        align-content: center;
         height: 30px;
         margin-top: 5px;
     }
     &_checkbox{
-        margin-left: 15px;
+        margin: 0 !important;
+        width: 65% !important;
+        padding-top: 5px;
+        margin-left: 15px !important;
     }
-    &_title{
-        width: 65%;
-        padding-left: 10px;
-        border-bottom: 1px solid black;
+    &_checkbox > div {
+        height: 24px !important;
     }
-    &_titleTxt{
-        margin: 0;
+    &_btn{
+        margin-left: 2px !important;
+        border-radius: 5px;
+        width: 35px !important;
+        height: 35px !important;
     }
-    &_editBtn{
-        width: 36px;
-        height: 36px;
-    }
-    &_editBtnIcon{
+    &_btnIcon{
         margin-top: -5px;
+        margin-left: -6px;
         width: 20px;
         height: 20px;
     }
-    &_delBtn{
-        width: 36px;
-        height: 36px;
-        font-size: 20px;
-    }
-    &_delBtnIcon{
-        width: 20px;
-        height: 20px;
-        line-height: normal;
-        color: white;
-        margin-top: -20px;
-    }
-    &_text{
-        width: 90%;
-        margin-top: 5px;
-    }
-    &_textTxt{
+    &_title > span{
+        width: 100px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    &_text{
+        @extend %formText;  
+    }
+}
+
+.-bgRed{
+    background: #ff0000 !important;
 }
